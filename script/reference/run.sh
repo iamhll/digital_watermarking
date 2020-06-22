@@ -10,8 +10,8 @@
 
 #--- PARAMETER -------------------------
 # directory or file name
-#NAME_DIR_SEQ="/mnt/e/DOWNLOAD/SEQUENCE/bitDepth_8"
-NAME_DIR_SEQ="../../yuv"
+NAME_DIR_SEQ="/mnt/e/DOWNLOAD/SEQUENCE/bitDepth_8"
+#NAME_DIR_SEQ="../../yuv"
 NAME_LOG_RLT="dump.log"
 NAME_LOG_JOB="jobs.log"
 NAME_DIR_DMP="dump"
@@ -40,34 +40,37 @@ LIST_AVAILABLE=(
 )
 LIST_SEQ=(
   "BasketballPass"   20    60  416   240    8
-  #"BQSquare"         20    60  416   240    8
-  #"BlowingBubbles"   20    60  416   240    8
-  #"RaceHorses"       20    60  416   240    8
-  #"BasketballDrill"  20    60  832   480    8
-  #"BQMall"           20    60  832   480    8
-  #"PartyScene"       20    60  832   480    8
-  #"RaceHorsesC"      20    60  832   480    8
-  #"FourPeople"       20    60  1280  720    8
-  #"Johnny"           20    60  1280  720    8
-  #"KristenAndSara"   20    60  1280  720    8
-  #"Kimono"           20    60  1920  1080   8
-  #"ParkScene"        20    60  1920  1080   8
-  #"Cactus"           20    60  1920  1080   8
-  #"BasketballDrive"  20    60  1920  1080   8
-  #"BQTerrace"        20    60  1920  1080   8
-  #"Traffic"          20    60  2560  1600   8
-  #"PeopleOnStreet"   20    60  2560  1600   8
+  "BQSquare"         20    60  416   240    8
+  "BlowingBubbles"   20    60  416   240    8
+  "RaceHorses"       20    60  416   240    8
+  "BasketballDrill"  20    60  832   480    8
+  "BQMall"           20    60  832   480    8
+  "PartyScene"       20    60  832   480    8
+  "RaceHorsesC"      20    60  832   480    8
+  "FourPeople"       20    60  1280  720    8
+  "Johnny"           20    60  1280  720    8
+  "KristenAndSara"   20    60  1280  720    8
+  "Kimono"           20    60  1920  1080   8
+  "ParkScene"        20    60  1920  1080   8
+  "Cactus"           20    60  1920  1080   8
+  "BasketballDrive"  20    60  1920  1080   8
+  "BQTerrace"        20    60  1920  1080   8
+  "Traffic"          20    60  2560  1600   8
+  "PeopleOnStreet"   20    60  2560  1600   8
 )
 
 # encoder
 LIST_QP=($(seq 22 5 37))
-SIZE_GOP=10
+SIZE_GOP=1
 
 
 #--- MAIN BODY -------------------------
 #--- INIT ---
-# copy x265
-cp ../../src/x265_3.0/build/linux/8bit/x265 .
+# update and copy x265
+#cd ../../src/x265_3.0/build/linux/8bit/
+#make
+#cd -
+#cp ../../src/x265_3.0/build/linux/8bit/x265 .
 
 # prepare directory
 mkdir -p $NAME_DIR_DMP
@@ -132,14 +135,18 @@ do
       --frames          $NUMB_FRA                      \
       --keyint          $SIZE_GOP                      \
       --qp              $DATA_QP                       \
-      --output          "${PREF_DUMP}x265.hevc"        \
-      --output-depth    $DATA_PXL_WD                   \
-      --log-level       full                           \
-      --psnr                                           \
-      --no-progress                                    \
-      --tune            psnr                           \
       --ipratio         1                              \
       --pbratio         1                              \
+      --output          "${PREF_DUMP}x265.hevc"        \
+      --output-depth    $DATA_PXL_WD                   \
+      --psnr                                           \
+      --tune            psnr                           \
+      --log-level       full                           \
+      --no-progress                                    \
+      --frame-threads                1                 \
+      --no-wpp                                         \
+      --no-pmode                                       \
+      --no-pme                                         \
     >& "${PREF_DUMP}x265.log" &
   done
 

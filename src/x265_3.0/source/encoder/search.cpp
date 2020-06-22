@@ -1530,6 +1530,18 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
     {
         uint32_t bmode = 0;
 
+
+
+
+        //--- BEGIN OF HLL ---
+        uint64_t datcstLst[35];
+        uint64_t datModLst[35];
+        uint64_t numMod;
+        //--- END OF HLL ---
+
+
+
+
         if (intraMode.cu.m_lumaIntraDir[puIdx] != (uint8_t)ALL_IDX)
             bmode = intraMode.cu.m_lumaIntraDir[puIdx];
         else
@@ -1630,6 +1642,19 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
 
             /* measure best candidates using simple RDO (no TU splits) */
             bcost = MAX_INT64;
+
+
+
+
+            //--- BEGIN OF HLL ---
+            numMod = 0;
+            for (int i = 0; i < 35; ++i)
+                datcstLst[i] = MAX_INT64;
+            //--- END OF HLL ---
+
+
+
+
             for (int i = 0; i < maxCandCount; i++)
             {
                 if (candCostList[i] == MAX_INT64)
@@ -1646,6 +1671,29 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
                 else
                     codeIntraLumaQT(intraMode, cuGeom, initTuDepth, absPartIdx, false, icosts, depthRange);
                 COPY2_IF_LT(bcost, icosts.rdcost, bmode, rdModeList[i]);
+
+
+
+
+                //--- BEGIN OF HLL ---
+                for (int idxX = 0; idxX < 35; ++idxX) {
+                    if (icosts.rdcost < datcstLst[idxX]) {
+                        ++numMod;
+                        for (int idxY = 34; idxY > idxX; --idxY) {
+                            datcstLst[idxY] = datcstLst[idxY - 1];
+                            datModLst[idxY] = datModLst[idxY - 1];
+                        }
+                        datcstLst[idxX] = icosts.rdcost;
+                        datModLst[idxX] = rdModeList[i];
+                        break;
+                    }
+                }
+                bmode = datModLst[0];
+                //--- END OF HLL ---
+
+
+
+
             }
         }
 
@@ -1657,14 +1705,36 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
 
 
         //--- BEGIN OF HLL ---
-        if (bmode == 0)
-            bmode = 1;
-        else if (bmode == 1)
-            bmode = 0;
-        else if (bmode == 17 || bmode == 34)
-            --bmode;
-        else
-            ++bmode;
+        // paper
+        if (0) {
+            if (bmode == 0)
+                bmode = 1;
+            else if (bmode == 1)
+                bmode = 0;
+            else if (bmode == 17 || bmode == 34)
+                --bmode;
+            else
+                ++bmode;
+        }
+
+        // mine
+        if (1) {
+            static bool flgIni = 1;
+            if (flgIni) {
+                flgIni = 0;
+                //srand((unsigned) time(NULL));
+                srand(1);
+            }
+            bool flgEmb = rand() % 2;
+            if (flgEmb)
+                bmode = datModLst[0];
+            else {
+                if (numMod > 1)
+                    bmode = datModLst[1];
+                else
+                    bmode = datModLst[0];
+            }
+        }
         //--- END OF HLL ---
 
 

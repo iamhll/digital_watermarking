@@ -1705,8 +1705,37 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
 
 
         //--- BEGIN OF HLL ---
+        // parameter
+        int INDX_MTH           = -1;
+        int NUMB_LCU_PER_FRAME = 28;    // common
+        int INDX_LCU_EBD       = 1;     // method 0
+        int DATA_SEED          = 1;     // method 3, 4
+        int DATA_RATE          = 10;    // method 4
+
+        // common
+        static int cntLCU = 0;
+        if (cuGeom.geomRecurId == 1) {
+            cntLCU++;
+            if (cntLCU > NUMB_LCU_PER_FRAME)
+                cntLCU = 1;
+        }
+
         // paper
-        if (0) {
+        if (INDX_MTH == 0) {
+            if (cntLCU == INDX_LCU_EBD) {
+                if (bmode == 0)
+                    bmode = 1;
+                else if (bmode == 1)
+                    bmode = 0;
+                else if (bmode == 17 || bmode == 34)
+                    --bmode;
+                else
+                    ++bmode;
+            }
+        }
+
+        // mine_1
+        if (INDX_MTH == 1) {
             if (bmode == 0)
                 bmode = 1;
             else if (bmode == 1)
@@ -1717,18 +1746,38 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
                 ++bmode;
         }
 
-        // mine
-        if (1) {
+        // mine_2
+        if (INDX_MTH == 2) {
+            if (numMod > 1)
+                bmode = datModLst[1];
+            else
+                bmode = datModLst[0];
+        }
+
+        // mine_3
+        if (INDX_MTH == 3) {
             static bool flgIni = 1;
             if (flgIni) {
                 flgIni = 0;
-                //srand((unsigned) time(NULL));
-                srand(1);
+                srand(DATA_SEED);
             }
-            bool flgEmb = rand() % 2;
-            if (flgEmb)
-                bmode = datModLst[0];
-            else {
+            if (rand() % 2) {
+                if (numMod > 1)
+                    bmode = datModLst[1];
+                else
+                    bmode = datModLst[0];
+            }
+        }
+
+        // mine_4
+        if (INDX_MTH == 4) {
+            static bool flgIni = 1;
+            if (flgIni) {
+                flgIni = 0;
+                srand(DATA_SEED);
+            }
+            bool flgEmb = rand() % DATA_RATE == 0;
+            if (flgEmb) {
                 if (numMod > 1)
                     bmode = datModLst[1];
                 else

@@ -1,0 +1,3 @@
+script/run/dump/*
+script/run/jobs.log
+src/x265_3.0/build/linux/*

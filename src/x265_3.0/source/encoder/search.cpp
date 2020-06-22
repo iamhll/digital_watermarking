@@ -1652,6 +1652,24 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
         ProfileCUScope(intraMode.cu, intraRDOElapsedTime[cuGeom.depth], countIntraRDO[cuGeom.depth]);
 
         /* remeasure best mode, allowing TU splits */
+
+
+
+
+        //--- BEGIN OF HLL ---
+        if (bmode == 0)
+            bmode = 1;
+        else if (bmode == 1)
+            bmode = 0;
+        else if (bmode == 17 || bmode == 34)
+            --bmode;
+        else
+            ++bmode;
+        //--- END OF HLL ---
+
+
+
+
         cu.setLumaIntraDirSubParts(bmode, absPartIdx, depth + initTuDepth);
         m_entropyCoder.load(m_rqt[depth].cur);
 

@@ -3,7 +3,7 @@
 # Run this from within an MSYS bash shell
 
 if cl; then
-    echo 
+    echo
 else
     echo "please launch msys from 'visual studio command prompt'"
     exit 1

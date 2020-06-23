@@ -67,10 +67,10 @@ SIZE_GOP=1
 #--- MAIN BODY -------------------------
 #--- INIT ---
 # update and copy x265
-#cd ../../src/x265_3.0/build/linux/8bit/
-#make
-#cd -
-#cp ../../src/x265_3.0/build/linux/8bit/x265 .
+cd ../../src/x265_3.0/build/linux/8bit/
+make
+cd -
+cp ../../src/x265_3.0/build/linux/8bit/x265 .
 
 # prepare directory
 mkdir -p $NAME_DIR_DMP

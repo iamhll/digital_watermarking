@@ -1,3 +1,2 @@
-script/*/dump*/*
-script/*/jobs.log
+script/extract/dump/*
 src/x265_3.0/build/linux/*

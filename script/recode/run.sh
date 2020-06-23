@@ -14,6 +14,7 @@ NAME_DIR_SEQ="../embed_paper/dump_with_lcu_01_embedded"
 NAME_LOG_RLT="dump.log"
 NAME_LOG_JOB="jobs.log"
 NAME_DIR_DMP="dump_paper_with_lcu_01_embedded"
+DATA_QP_DLT=0
 
 # sequence
 #  name              frame fps width height depth
@@ -128,24 +129,24 @@ do
     # encode
     # core
     ./x265                                             \
-      --input           $FILE_SEQ.yuv                  \
-      --fps             $DATA_FPS                      \
-      --input-res       ${SIZE_FRA_X}x${SIZE_FRA_Y}    \
-      --input-depth     $DATA_PXL_WD                   \
-      --frames          $NUMB_FRA                      \
-      --keyint          $SIZE_GOP                      \
-      --qp              $DATA_QP                       \
-      --ipratio         1                              \
-      --pbratio         1                              \
-      --output          ${PREF_DMP}x265.h265           \
-      --output-depth    $DATA_PXL_WD                   \
-      --recon           ${PREF_DMP}x265.yuv            \
-      --recon-depth     $DATA_PXL_WD                   \
+      --input            $FILE_SEQ.yuv                 \
+      --fps              $DATA_FPS                     \
+      --input-res        ${SIZE_FRA_X}x${SIZE_FRA_Y}   \
+      --input-depth      $DATA_PXL_WD                  \
+      --frames           $NUMB_FRA                     \
+      --keyint           $SIZE_GOP                     \
+      --qp               $((DATA_QP + DATA_QP_DLT))    \
+      --ipratio          1                             \
+      --pbratio          1                             \
+      --output           ${PREF_DMP}x265.h265          \
+      --output-depth     $DATA_PXL_WD                  \
+      --recon            ${PREF_DMP}x265.yuv           \
+      --recon-depth      $DATA_PXL_WD                  \
       --psnr                                           \
-      --tune            psnr                           \
-      --log-level       full                           \
+      --tune             psnr                          \
+      --log-level        full                          \
       --no-progress                                    \
-      --frame-threads                1                 \
+      --frame-threads    1                             \
       --no-wpp                                         \
       --no-pmode                                       \
       --no-pme                                         \

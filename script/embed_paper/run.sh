@@ -127,28 +127,28 @@ do
 
     # encode
     # core
-    ./x265                                             \
-      --input           $FILE_SEQ.yuv                  \
-      --fps             $DATA_FPS                      \
-      --input-res       ${SIZE_FRA_X}x${SIZE_FRA_Y}    \
-      --input-depth     $DATA_PXL_WD                   \
-      --frames          $NUMB_FRA                      \
-      --keyint          $SIZE_GOP                      \
-      --qp              $DATA_QP                       \
-      --ipratio         1                              \
-      --pbratio         1                              \
-      --output          ${PREF_DMP}x265.h265           \
-      --output-depth    $DATA_PXL_WD                   \
-      --recon           ${PREF_DMP}x265.yuv            \
-      --recon-depth     $DATA_PXL_WD                   \
-      --psnr                                           \
-      --tune            psnr                           \
-      --log-level       full                           \
-      --no-progress                                    \
-      --frame-threads                1                 \
-      --no-wpp                                         \
-      --no-pmode                                       \
-      --no-pme                                         \
+    ./x265                                              \
+      --input            $FILE_SEQ.yuv                  \
+      --fps              $DATA_FPS                      \
+      --input-res        ${SIZE_FRA_X}x${SIZE_FRA_Y}    \
+      --input-depth      $DATA_PXL_WD                   \
+      --frames           $NUMB_FRA                      \
+      --keyint           $SIZE_GOP                      \
+      --qp               $DATA_QP                       \
+      --ipratio          1                              \
+      --pbratio          1                              \
+      --output           ${PREF_DMP}x265.h265           \
+      --output-depth     $DATA_PXL_WD                   \
+      --recon            ${PREF_DMP}x265.yuv            \
+      --recon-depth      $DATA_PXL_WD                   \
+      --psnr                                            \
+      --tune             psnr                           \
+      --log-level        full                           \
+      --no-progress                                     \
+      --frame-threads    1                              \
+      --no-wpp                                          \
+      --no-pmode                                        \
+      --no-pme                                          \
     >& "${PREF_DMP}x265.log" &
   done
 

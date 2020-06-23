@@ -114,7 +114,7 @@ do
   do
     # extract parameter
     DATA_QP=${LIST_QP[ $((cntQp + 0)) ]}
-    PREF_DUMP=$NAME_DIR_DMP/${NAME_SEQ}_${DATA_QP}/
+    PREF_DMP=$NAME_DIR_DMP/${NAME_SEQ}_${DATA_QP}/
 
     # update counter
     cntQp=$((cntQp + 1))
@@ -137,9 +137,9 @@ do
       --qp              $DATA_QP                       \
       --ipratio         1                              \
       --pbratio         1                              \
-      --output          ${PREF_DUMP}x265.h265          \
+      --output          ${PREF_DMP}x265.h265           \
       --output-depth    $DATA_PXL_WD                   \
-      --recon           ${PREF_DUMP}x265.yuv           \
+      --recon           ${PREF_DMP}x265.yuv            \
       --recon-depth     $DATA_PXL_WD                   \
       --psnr                                           \
       --tune            psnr                           \
@@ -149,7 +149,7 @@ do
       --no-wpp                                         \
       --no-pmode                                       \
       --no-pme                                         \
-    >& "${PREF_DUMP}x265.log" &
+    >& "${PREF_DMP}x265.log" &
   done
 
   # wait
@@ -183,13 +183,13 @@ do
   do
     # extract parameter
     DATA_QP=${LIST_QP[ $((cntQp + 0)) ]}
-    PREF_DUMP="$NAME_DIR_DMP/${NAME_SEQ}_${DATA_QP}/"
+    PREF_DMP="$NAME_DIR_DMP/${NAME_SEQ}_${DATA_QP}/"
 
     # update counter
     cntQp=$((cntQp + 1))
 
     # grep
-    cat "${PREF_DUMP}x265.log"    \
+    cat "${PREF_DMP}x265.log"    \
       | perl -e 'while (<>) {
                    if (/kb\/s: ([\d\.]+)/) {
                      printf "%-13.2f \t ", $1

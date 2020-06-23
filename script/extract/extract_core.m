@@ -1,13 +1,13 @@
 %-------------------------------------------------------------------------------
   %
-  %  Filename      : compare_core
+  %  Filename      : INDX_PLT
   %  Author        : Huang Leilei
   %  Created       : 2020-06-22
-  %  Description   : compare with matlab
+  %  Description   : extract with matlab
   %
 %-------------------------------------------------------------------------------
 
-function compare_core(A_FILE, B_FILE, SIZE_FRA_X, SIZE_FRA_Y, NUMB_FRA, DATA_THR_DIF, INDX_SHOW)
+function D_PSNR = INDX_PLT(A_FILE, B_FILE, SIZE_FRA_X, SIZE_FRA_Y, NUMB_FRA, DATA_THR_DIF, FLAG_PLT, INDX_SHOW, FLAG_STP)
 
 %% init
 % make directory
@@ -18,11 +18,14 @@ end
 fptA = fopen(A_FILE, 'r');
 fptB = fopen(B_FILE, 'r');
 % open figure
-figure(1);
-set(gcf, 'position', [100, 400, 1100, 600]);
+if FLAG_PLT
+    figure(1);
+    set(gcf, 'position', [100, 400, 1100, 600]);
+end
 
 
 %% main loop
+D_PSNR = zeros(NUMB_FRA, 3);
 for idxFra = 1:NUMB_FRA
     % read A
     A_y4 = fread(fptA, SIZE_FRA_X     * SIZE_FRA_Y    , 'uint8');
@@ -79,50 +82,67 @@ for idxFra = 1:NUMB_FRA
     % show diff
     flgErr = 0;
     for idxChn = 1:3
-        subplot(2, 2, idxChn);
+        % calculate
         D_yuv = abs(A_yuv(:, :, idxChn) - B_yuv(:, :, idxChn));
         %D_yuv(D_yuv >  DATA_THR_DIF) = 255;
         %D_yuv(D_yuv <= DATA_THR_DIF) = 0;
         %imshow(D_yuv)
         D_yuv(D_yuv > DATA_THR_DIF) = DATA_THR_DIF;
-        mesh(D_yuv);
-        view([0,0,1]);
-        axis equal;
-        axis([1, SIZE_FRA_X, 1, SIZE_FRA_Y]);
-        switch idxChn
-            case 1
-                title('diff in y channel');
-            case 2
-                title('diff in u channel');
-            case 3
-                title('diff in v channel');
+
+        if FLAG_PLT
+            % plot
+            subplot(2, 2, idxChn);
+            mesh(D_yuv);
+
+            % tune
+            view([0,0,1]);
+            axis equal;
+            axis([1, SIZE_FRA_X, 1, SIZE_FRA_Y]);
+            switch idxChn
+                case 1
+                    title('diff in y channel');
+                case 2
+                    title('diff in u channel');
+                case 3
+                    title('diff in v channel');
+            end
         end
+
+        % calculate psnr
+        D_MSE = sum(sum(D_yuv .^ 2)) / (SIZE_FRA_X * SIZE_FRA_Y);
+        D_PSNR(idxFra, idxChn) = 20 * log10(255 / sqrt(D_MSE));
+
+        % raise flag
         if sum(sum(D_yuv)) > 0
             flgErr = 1;
         end
     end
 
     % show yuv
-    subplot(2, 2, 4);
-    if INDX_SHOW == 'A'
-        S_yuv = uint8(A_yuv);
-    else
-        S_yuv = uint8(B_yuv);
+    if FLAG_PLT
+        subplot(2, 2, 4);
+        if INDX_SHOW == 'A'
+            S_yuv = uint8(A_yuv);
+        else
+            S_yuv = uint8(B_yuv);
+        end
+        S_rgb = ycbcr2rgb(S_yuv);
+        imshow(S_rgb);
+        title(['frame ', num2str(idxFra), '/', num2str(NUMB_FRA)]);
+        drawnow;
     end
-    S_rgb = ycbcr2rgb(S_yuv);
-    imshow(S_rgb);
-    title(['frame ', num2str(idxFra), '/', num2str(NUMB_FRA)]);
-    drawnow;
 
     % stop
-    if flgErr
+    if FLAG_STP && flgErr
         input('press enter to continue', 's');
     end
 
     % save figure
-    fig = getframe(gcf);
-    img = frame2im(fig);
-    imwrite(img, ['dump/showDiff_frame', num2str(idxFra, '%02d'), '.png']);
+    if FLAG_PLT
+        fig = getframe(gcf);
+        img = frame2im(fig);
+        imwrite(img, ['dump/showDiff_frame', num2str(idxFra, '%02d'), '.png']);
+    end
 end
 
 

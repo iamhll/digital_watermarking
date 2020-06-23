@@ -1,0 +1,24 @@
+yuv  [info]: 416x240 fps 60000/1000 i420p8 frames 0 - 19 of 501
+yuv  [info]: reconstructed images 416x240 fps 60000/1000 i420
+raw  [info]: output file: dump_with_lcu_03_embedded/BlowingBubbles_37/x265.h265
+x265 [info]: HEVC encoder version 3.0
+x265 [info]: build info [Linux][GCC 7.5.0][64 bit][noasm] 8bit+10bit+12bit
+x265 [info]: using cpu capabilities: none!
+x265 [info]: Main Intra profile, Level-2.1 (Main tier)
+x265 [info]: Thread pool created using 8 threads
+x265 [info]: Slices                              : 1
+x265 [info]: frame threads / pool features       : 1 / none
+x265 [warning]: Source height < 720p; disabling lookahead-slices
+x265 [info]: Coding QT: max CU size, min CU size : 64 / 8
+x265 [info]: Residual QT: max TU size, max depth : 32 / 1 inter / 1 intra
+x265 [info]: ME / range / subpel / merge         : hex / 57 / 2 / 2
+x265 [info]: Keyframe min / max / scenecut / bias: 1 / 1 / 0 / 5.00
+x265 [info]: Lookahead / bframes / badapt        : 0 / 0 / 0
+x265 [info]: b-pyramid / weightp / weightb       : 0 / 0 / 0
+x265 [info]: References / ref-limit  cu / depth  : 1 / on / on
+x265 [info]: Rate Control                        : CQP-37
+x265 [info]: tools: rd=3 rskip signhide tmvp strong-intra-smoothing deblock sao
+x265 [info]: frame I:     20, Avg QP:37.00  kb/s: 2134.73   PSNR Mean: Y:30.274 U:35.182 V:36.544
+x265 [info]: consecutive B-frames: 100.0% 
+
+encoded 20 frames in 3.65s (5.48 fps), 2134.73 kb/s, Avg QP:37.00, Global PSNR: 31.671

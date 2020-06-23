@@ -14,7 +14,7 @@
 NAME_DIR_SEQ="../../yuv"
 NAME_LOG_RLT="dump.log"
 NAME_LOG_JOB="jobs.log"
-NAME_DIR_DMP="dump"
+NAME_DIR_DMP="dump_with_lcu_01_embedded"
 
 # sequence
 #  name              frame fps width height depth

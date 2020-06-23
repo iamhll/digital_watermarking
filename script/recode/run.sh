@@ -10,7 +10,7 @@
 
 #--- PARAMETER -------------------------
 # directory or file name
-NAME_DIR_SEQ="../embedding_paper/dump_with_lcu_01_embedded"
+NAME_DIR_SEQ="../embed_paper/dump_with_lcu_01_embedded"
 NAME_LOG_RLT="dump.log"
 NAME_LOG_JOB="jobs.log"
 NAME_DIR_DMP="dump_paper_with_lcu_01_embedded"

@@ -1710,7 +1710,7 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
         int NUMB_LCU_PER_FRAME = 28;    // common
         int INDX_LCU_EBD       = 1;     // method 0
         int DATA_SEED          = 1;     // method 3, 4
-        int DATA_RATE          = 10;    // method 4
+        int DATA_RATE          = 6;     // method 4
 
         // common
         static int cntLCU = 0;
@@ -1776,7 +1776,7 @@ sse_t Search::estIntraPredQT(Mode &intraMode, const CUGeom& cuGeom, const uint32
                 flgIni = 0;
                 srand(DATA_SEED);
             }
-            bool flgEmb = rand() % DATA_RATE == 0;
+            bool flgEmb = rand() % 100 < DATA_RATE;
             if (flgEmb) {
                 if (numMod > 1)
                     bmode = datModLst[1];

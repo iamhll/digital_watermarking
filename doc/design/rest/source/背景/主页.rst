@@ -10,3 +10,92 @@
 ====
 背景
 ====
+
+-----
+定义
+-----
+
+    数字水印技术，是一种基于内容的、非密码机制的计算机信息隐藏技术。
+
+    |   该技术会将一些标识信息，即数字水印，直接或者间接地嵌入数字载体当中，
+    |   但不影响原载体的使用价值，也不容易被探知和再次修改，却可以被生产方识别和辨认。
+    |   通过这些隐藏在载体中的信息，生产方可以达到确认内容创建者、购买者、传送隐秘信息或者判断载体是否被篡改等目的。
+    |   数字水印是保护信息安全、实现防伪溯源、版权保护的有效办法，是信息隐藏技术研究领域的重要分支和研究方向。
+        [#数字水印]_
+
+    本次调研所讨论的载体是视频文件。
+
+
+-----
+分类
+-----
+
+    现有的数字水印技术一般可以分为两大类。
+
+#.  一类通过改变某些特定像素或量化系数的方式直接地嵌入水印信息。
+
+    |   非常多的数字水印技术都选择将数据的最低比特作为改变的对象。
+    |   其原因是：替换这些比特，既能够轻易地嵌入水印信息，又能够不轻易地被使用者所感知。
+    |   然而，显然地，攻击者也能够通过改变这些比特来达到抹除水印信息的目的，
+        并且，基于同样的原因，这些改变也不会显著地降低视频的质量。
+
+    |   鉴于这一问题，一些算法提出了其他的修改方式。例如，
+    |   Gaj等研究者 [#Gaj]_ 提出对连续帧内帧的某些特定块的非零系数数量进行修改。
+    |   Dutta等研究者 [#Dutta]_ 提出对连续帧内帧的某些特定块的前两个非零系数进行修改。
+
+    \
+
+#.  另一类则通过添加噪声的方式间接地嵌入水印信息。
+
+    |   例如，
+    |   Kalker等研究者 [#Kalker]_ 提出了基于频谱展开的噪声添加方式。
+    |   Hartung [#Hartung]_ 和Yamada等研究者 [#Yamada]_ 提出了基于伪随机种子的噪声添加方式。
+
+    |   由于水印信息是通过噪声嵌入的，因此，对于这类水印，需要通过相关性检测的方式进行提取。
+    |   确切地说，当一个被攻击（篡改）的视频与某个带水印的原始视频在相关性上达到一定程度时，
+        即可认为该被攻击（篡改）视频的来源是这个带水印的原始视频。
+    |   然而，由于不同的攻击手段会在不同程度上影响到视频的噪声情况，
+        因此，很难给出一个统一通用的阈值。
+
+
+-----
+不足
+-----
+
+    通过上述分析可以看出，现有的技术在以下方面仍然存在一定的不足之处。
+
+#.  基于最低比特的技术在鲁棒性上较为不足，容易受到攻击。
+
+    \
+
+#.  基于噪音叠加的技术，尽管其在鲁棒性上有所提高，但在水印检测过程中所采用的阈值却难以统一。
+
+    \
+
+#.  |   上述方法都未结合编码器进行实施，
+    |   因此，尽管水印引入的噪声可能在视觉感知上不易察觉，但却很有可能导致编码码率的大幅上升。
+
+
+-----
+尾注
+-----
+
+.. [#数字水印]  `百度百科 · 数字水印 <https://baike.baidu.com/item/数字水印/722667?fr=aladdin>`_
+.. [#Gaj]       S. Gaj, A. Sur, and P. K. Bora,
+                “A robust watermarking scheme againstre-compression attack for H.265/HEVC,”
+                presented at the 5th Nat. Conf.
+                Comput. Vis. Pattern Recognit. Image Process. Graph.,
+                Patna, India,2015, pp. 1–4
+.. [#Dutta]     T. Dutta and H. P. Gupta,
+                “A robust watermarking framework for highefficiency video coding (HEVC)-Encoded video with blind extraction process,”
+                J. Vis. Commun. Image Represent., vol. 38, pp. 29–44,Jul. 2016
+.. [#Kalker]    T. Kalker, G. Depovere, J. Haitsma, and M. J. Maes,
+                “Videowatermarking system for broadcast monitoring,”
+                inProc. SPIESecurity Watermarking Multimedia Contents,
+                vol. 3657. San Jose, CA, USA, 1999, pp. 103–112
+.. [#Hartung]   F. Hartung and B. Girod,
+                “Watermarking of uncompressed and compressed video,”
+                Signal Process., vol. 66, no. 3, pp. 283–301, 19
+.. [#Yamada]    T. Yamada, M. Maeta, and F. Mizushima,
+                “Video watermark applicationfor embedding recipient ID in real-time-encoding VoD server,”
+                J. RealTime Image Process., vol. 11, no. 1, pp. 211–222, 20

@@ -95,7 +95,7 @@ for idxFra = 1:NUMB_FRA
             mesh(D_yuv);
 
             % tune
-            view([0,0,1]);
+            view([0,0,-1]);
             axis equal;
             axis([1, SIZE_FRA_X, 1, SIZE_FRA_Y]);
             switch idxChn
